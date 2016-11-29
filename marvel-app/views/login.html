@@ -46,22 +46,52 @@
     </nav>
 
     <!-- Begin page content -->
-    <div class="container">
-      <div class="page-header">
-        <h1>Welcome to Marvel Revisited</h1>
+   <div class="main-container">
+      <div class="border-container">
+        <h1>Marvel Revisited</h1>
+        <br>
+        {{#logged_in}}
+        <div class="col-lg-6 center-block">
+          <div class="alert alert-dismissible alert-warning">
+            <h4>Welcome {{email}}!</h4>
+            <p>What are you reading, you marvelous creature?</p>
+          </div>
+          <!-- <div class="stored-items">
+              Comics saved to db here
+          </div> -->
+          <a href="/logout">Logout!</a>
+        </div>
+        {{/logged_in}}
+        {{^logged_in}}
+        <div class="col-lg-6 center-block">
+          <div class="well bs-component">
+            <form class="form-horizontal" action="/login" method="post">
+              <fieldset>
+                <legend>Login</legend>
+                <div class="form-group">
+                  <label for="inputEmail" class="col-lg-2 control-label">Email</label>
+                  <div class="col-lg-10">
+                    <input name="email" type="text" class="form-control" id="inputEmail" placeholder="Email">
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label for="inputPassword" class="col-lg-2 control-label">Password</label>
+                  <div class="col-lg-10">
+                    <input name="password" type="password" class="form-control" id="inputPassword" placeholder="Password">
+                  </div>
+                </div>
+                <div class="form-group">
+                  <div class="col-lg-10 col-lg-offset-2">
+                    <button type="submit" class="btn btn-primary">Login</button>
+                  </div>
+                </div>
+              </fieldset>
+            </form>
+          </div>
+          <p>Not a member? <a href="/signup">Sign Up!</a></p>
+        </div>
+        {{/logged_in}}
       </div>
-     <!--  <p class="lead">Pin a fixed-height footer to the bottom of the viewport in desktop browsers with this custom HTML and CSS. A fixed navbar has been added with <code>padding-top: 60px;</code> on the <code>body &gt; .container</code>.</p>
-      <p>Back to <a href="../sticky-footer">the default sticky footer</a> minus the navbar.</p> -->
-
-      <div class="search-bar">
-      <input name="value" type="text" placeholder="Enter Character" id="search-input">
-      <button id="search-button">Search</button>
-      </div>
-
-      <!--   <div class="search-results">
-
-  </div> -->
-
     </div>
 
     <footer class="footer">

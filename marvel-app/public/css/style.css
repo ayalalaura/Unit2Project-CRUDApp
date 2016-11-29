@@ -1,0 +1,56 @@
+/* getbootstrap - code for footer, nav, sign in, grid */
+/* google fonts */
+
+html {
+  position: relative;
+  min-height: 100%;
+}
+
+body {
+  font-family: 'Russo One', sans-serif;
+  /* font-family: 'PT Sans', sans-serif;  make this the secondary font and Russo for headings*/
+
+  /* Margin bottom by footer height */
+  margin-bottom: 60px;
+}
+
+.page-header {
+  margin-top: 80px;
+}
+
+.main-container {
+  width: 980px;
+  margin: 0 auto;
+}
+
+h1 {
+  text-align: center;
+}
+
+.center-block { float: none }
+
+.footer {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  /* Set the fixed height of the footer here */
+  height: 60px;
+  background-color: #f5f5f5;
+  color:  red;
+}
+
+/* body > .container {
+  padding: 60px 15px 0;
+}
+.container .text-muted {
+  margin: 20px 0;
+}
+
+.footer > .container {
+  padding-right: 15px;
+  padding-left: 15px;
+}
+
+code {
+  font-size: 80%;
+} */
