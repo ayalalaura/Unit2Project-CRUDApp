@@ -43,7 +43,7 @@ var getCharacter = function(searchCharacter){
        $body.append('<p>' + id + '</p>');
        $body.append('<p>' + name + '</p>');
        $body.append('<p>' + description + '</p>');
-       $body.append("<img src='" + image + "'>");
+       $body.append("<img src=" + image + ">");
    }
 
 
