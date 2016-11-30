@@ -68,14 +68,17 @@ var PRIVATE_KEY = process.env.PRIVATE_KEY;
 var HASH = process.env.HASH;
 
 // API Route
+// Using request npm module - similar to ajax syntax, calls the API. Nestled within app.get, which creates a route to view that data
 app.get('/api', function(req, res){
   var character = req.query.value;
   var api = 'https://gateway.marvel.com:443/v1/public/characters?name=' + character + '&ts=1&apikey=' + PUBLIC_KEY + '&hash=' + HASH;
   request.get({
     url: api,
     json: true,
-  }, function(err, resp, data){
-    res.json(data.results[0]) // adding 0 to test
+  }, function(err, resp, data){ // similar to .done or success function
+    // res.json(data.results[0]) // adding 0 to test it out
+    res.json(data.data.results[0]); // need to update this with the below; using console.log to get into object
+    // console.log(data.data.results[0].name); // returned an array of objects, name
   }
   )
 })
