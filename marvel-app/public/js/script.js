@@ -4,46 +4,52 @@ $(document).ready(function() {
 var getCharacter = function(characterSearch){
   console.log('characterSearch');
 
-  // thanks Heidi & Kristi for helping me use request to connect server with client side API calls
   $.ajax({
-    url: '/api', // created this route/url in app.js with specific ajax call (character data) using request module
+    url: '/api', // created this route in app.js with specific ajax call using request module (thx Heidi & Krist!)
     method: 'GET',
-    data: { value: characterSearch},
+    data: {
+      value: characterSearch,
+      characterData,
+      comicData
+    },
     dataType: 'json'
   }).done(function(data){
     console.log(data);
-//  for (var i = 0; i < data.length; i++) {
-//     searchResults(data[i]);
-//   } //end for
+    for (var i = 0; i < comicData.length; i++) {
+        searchResults(characterData, comicData[i]);
+    } //end for
+// access both items
   searchResults(data);
   }) // end .done
 } // end ajax call
 
 
+// THIS IS FINE
    var searchMarvel = function() {
-       $("#search-button").click(function() {
-           var searchTerm = $("#search-input").val();
-           getCharacter(searchTerm);
+       $("#search-button").click(function() { // event listener on search button
+           var searchTerm = $("#search-input").val(); // declaring var with value entered into input
+           getCharacter(searchTerm); // call the internal api (with data) using term entered into input
        });
    };
 
-   searchMarvel();
+   searchMarvel(); // calling event listener (button click), which triggers subsequent functions
 
 
+// combine these two functions into one
    var searchResults = function(data) {
-       var id = data.id;
-       var name = data.name;
-       var description = data.description;
-       var image = data.thumbnail.path; // Console ERROR: cannot read path of undefined
-       marvelCharacter(id, name, description, image);
+       // var id = data.id;
+       var characterName = characterData.name;
+       var characterDescription = characterData.description;
+       var characterImage = characterData.thumbnail.path; // Console ERROR: cannot read path of undefined
+       marvelCharacter(characterName, characterDescription, characterImage); // calling marvelCharacter and passing through this data
    }
 
-   var marvelCharacter = function(id, name, description, image) {
+   var marvelCharacter = function(characterName, characterDescription, characterImage) {
        var $body = $('body');
-       $body.append('<p>' + id + '</p>');
-       $body.append('<p>' + name + '</p>');
-       $body.append('<p>' + description + '</p>');
-       $body.append("<img src=" + image + '/standard_medium.jpg' + ">");
+       // $body.append('<p>' + id + '</p>');
+       $body.append('<p>' + characterName + '</p>');
+       $body.append('<p>' + characterDescription + '</p>');
+       $body.append("<img src=" + characterImage + '/standard_medium.jpg' + ">"); // completing path, as per Marvel API docs
    }
 
 

@@ -5,3 +5,8 @@ CREATE TABLE users (
   email VARCHAR(255) UNIQUE,
   password_digest VARCHAR(255)
 );
+
+
+CREATE
+
+-- RESEED

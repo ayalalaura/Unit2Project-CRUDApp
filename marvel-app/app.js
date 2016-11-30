@@ -2,26 +2,13 @@
 var express = require('express');
 var app = express();
 
-// Server on port 8080
+// Server on port 3000
 var port = process.env.PORT || 3000;
 
 // Load server
 app.listen(port, function() {
   console.log('Node app is running on port', port);
 });
-
-// Marvel API Package
-// Copyright (c) 2014, Matt Hernandez matt@modulus.io
-// Permission to use, copy, modify, and/or distribute this software for any purpose with or without fee is hereby granted, provided that the above copyright notice and this permission notice appear in all copies.
-// var api = require('marvel-api');
-// // Hiding API Keys: https://gist.github.com/derzorngottes/3b57edc1f996dddcab25
-// // Continue from Step 6
-// // var public = config.PUBLIC_KEY;
-// // var private = config.PRIVATE_KEY;
-
-
-// Node Fetch (Use THIS or marvel-api)
-var fetch = require('node-fetch');
 
 // user login encryption
 var bcrypt = require('bcryptjs'); // or just 'bcrypt', depending on what you installed
@@ -31,7 +18,7 @@ var session = require('express-session');
 
 // setting a secret value for your sessions (cookies)
 app.use(session({
-  secret: 'marvelR0x31',
+  secret: 'marvelR0x31', // do I need to hide this?
   resave: false,
   saveUninitialized: true,
   cookie: { secure: false }
@@ -67,41 +54,49 @@ var PUBLIC_KEY = process.env.PUBLIC_KEY;
 var PRIVATE_KEY = process.env.PRIVATE_KEY;
 var HASH = process.env.HASH;
 
+
+
 // API Route
 // Using request npm module - similar to ajax syntax, calls the API. Nestled within app.get, which creates a route to view that data
+// blessed by IA's - nested requests
 
 // route to get character data from api
 app.get('/api', function(req, res){
   var character = req.query.value;
-  var api = 'https://gateway.marvel.com:443/v1/public/characters?name=' + character + '&ts=1&apikey=' + PUBLIC_KEY + '&hash=' + HASH;
+  var firstApi = 'https://gateway.marvel.com:443/v1/public/characters?name=' + character + '&ts=1&apikey=' + PUBLIC_KEY + '&hash=' + HASH;
   request.get({
-    url: api,
+    url: firstApi,
     json: true,
   }, function(err, resp, data){ // similar to .done or success function
-    // res.json(data.results[0]) // adding 0 to test it out
-    res.json(data.data.results[0]); // need to update this with the below; using console.log to get into object
-    // console.log(data.data.results[0].name); // returned an array of objects, name
-  }
-  )
-})
+    var characterData = data.data.results[0]; // getting back one character
+    var characterId = data.data.results[0].id; // need this for second API call (IT WORKS)
+    var secondApi = 'https://gateway.marvel.com:443/v1/public/characters/' + characterId + '/comics?limit=12&ts=1&apikey=' + PUBLIC_KEY + '&hash=' + HASH;
+    // nested request for comics by character ID
+    request.get({
+      url: secondApi,
+      json: true,
+    }, function(err, resp, data){
+      var comicData = data.data.results; // array of 12 comic objects
+      res.json({
+        characterData,
+        comicData
+      }); // ends inner success function, returning both sets of data
+      console.log('comicData'); // this works!
+    } // inner request.get
+    ) // ends inner request.get
+    } // main request.get
+  ) // ends main request.get
+}) // ends app.get
 
-// marvel.characters.findByName('spider-man')
-//   .then(function(res) {
-//     console.log('Found character ID', res.data[0].id);
-//     return marvel.characters.comics(res.data[0].id);
-//   })
-//   .then(function(res) {
-//     console.log('found %s comics of %s total', res.meta.count, res.meta.total);
-//     console.log(res.data);
-//   })
 
-// Routes
+// Index route
 app.get('/', function(req,res){
   console.log('Index loaded');
   res.render('index');
 })
 
-// User routes (remember session, add info to db)
+
+// USER ROUTES
 // Login, remember session
 app.get('/login', function(req, res){
   var logged_in;
@@ -111,7 +106,7 @@ app.get('/login', function(req, res){
     email = req.session.user.email
   }
   var data = {
-    'logged_in': logged_in, // for now, we'll set this value to always false
+    'logged_in': logged_in,
     'email': email
   }
   res.render('login', data); // the response we want
@@ -130,6 +125,7 @@ app.post('/signup', function(req, res){
      db.none('INSERT INTO users (email, password_digest) VALUES ($1, $2)', [data.email, hash] // we wrap it in bcrypt; data.password becomes hash
     ).then(function(){
       res.send('User created!');
+      // res. redirect to index?
     });
   })
 })
@@ -137,16 +133,14 @@ app.post('/signup', function(req, res){
 // Check db for user
 app.post('/login', function(req, res){
   var data = req.body;
-  // first check if email is in the database
-  db.one('SELECT * FROM users WHERE email = $1', [data.email])
+  db.one('SELECT * FROM users WHERE email = $1', [data.email]) // check if email is in the database
   .catch(function(){
-    // res.send('User not found'); // not a a good message - make it ambiguous for hackers to guess what was wrong
     res.send('Email/Password not found')
   }).then(function(user){
-    bcrypt.compare(data.password, user.password_digest, function(err, cmp){
+    bcrypt.compare(data.password, user.password_digest, function(err, cmp){ // then check password
       if(cmp){
         req.session.user = user;
-        res.redirect('/');
+        res.redirect('/'); // redirect to the index page when user logged in
       } else {
         res.send('Email/Password not found')
       }
