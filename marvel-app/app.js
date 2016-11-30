@@ -69,6 +69,8 @@ var HASH = process.env.HASH;
 
 // API Route
 // Using request npm module - similar to ajax syntax, calls the API. Nestled within app.get, which creates a route to view that data
+
+// route to get character data from api
 app.get('/api', function(req, res){
   var character = req.query.value;
   var api = 'https://gateway.marvel.com:443/v1/public/characters?name=' + character + '&ts=1&apikey=' + PUBLIC_KEY + '&hash=' + HASH;
@@ -82,6 +84,16 @@ app.get('/api', function(req, res){
   }
   )
 })
+
+// marvel.characters.findByName('spider-man')
+//   .then(function(res) {
+//     console.log('Found character ID', res.data[0].id);
+//     return marvel.characters.comics(res.data[0].id);
+//   })
+//   .then(function(res) {
+//     console.log('found %s comics of %s total', res.meta.count, res.meta.total);
+//     console.log(res.data);
+//   })
 
 // Routes
 app.get('/', function(req,res){
@@ -142,13 +154,3 @@ app.post('/login', function(req, res){
   });
 })
 
-
-// marvel.characters.findByName('spider-man')
-//   .then(function(res) {
-//     console.log('Found character ID', res.data[0].id);
-//     return marvel.characters.comics(res.data[0].id);
-//   })
-//   .then(function(res) {
-//     console.log('found %s comics of %s total', res.meta.count, res.meta.total);
-//     console.log(res.data);
-//   })

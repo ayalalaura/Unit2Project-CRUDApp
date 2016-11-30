@@ -1,14 +1,14 @@
 $(document).ready(function() {
   console.log("script loaded");
 
-var getCharacter = function(searchCharacter){
-  console.log('searchCharacter');
+var getCharacter = function(characterSearch){
+  console.log('characterSearch');
 
   // thanks Heidi & Kristi for helping me use request to connect server with client side API calls
   $.ajax({
     url: '/api', // created this route/url in app.js with specific ajax call (character data) using request module
     method: 'GET',
-    data: { value: searchCharacter},
+    data: { value: characterSearch},
     dataType: 'json'
   }).done(function(data){
     console.log(data);
@@ -43,7 +43,7 @@ var getCharacter = function(searchCharacter){
        $body.append('<p>' + id + '</p>');
        $body.append('<p>' + name + '</p>');
        $body.append('<p>' + description + '</p>');
-       $body.append("<img src=" + image + ">");
+       $body.append("<img src=" + image + '/standard_medium.jpg' + ">");
    }
 
 
