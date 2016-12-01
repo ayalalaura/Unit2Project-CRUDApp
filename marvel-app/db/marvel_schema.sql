@@ -7,6 +7,11 @@ CREATE TABLE users (
 );
 
 
-CREATE
+CREATE TABLE comics (
+  id SERIAL PRIMARY KEY,
+
+
+
+);
 
 -- RESEED

@@ -58,7 +58,7 @@ var HASH = process.env.HASH;
 
 // API Route
 // Using request npm module - similar to ajax syntax, calls the API. Nestled within app.get, which creates a route to view that data
-// blessed by IA's - nested requests
+// blessed by my lovely IA's - nested requests!!!
 
 // route to get character data from api
 app.get('/api', function(req, res){
@@ -81,7 +81,7 @@ app.get('/api', function(req, res){
         characterData,
         comicData
       }); // ends inner success function, returning both sets of data
-      console.log('comicData'); // this works!
+      console.log('server-side request worked!'); // this works!
     } // inner request.get
     ) // ends inner request.get
     } // main request.get
@@ -94,6 +94,36 @@ app.get('/', function(req,res){
   console.log('Index loaded');
   res.render('index');
 })
+
+// comics stash (only accessible if you're logged in (button on the login page))
+app.get('/stash', function(req, res){
+  var user = req.session.user;
+  var data = {data:user};
+  if (user) {
+    db.many('SELECT * FROM comics WHERE users_id = $1', [user.id]).then(function(something){
+      data['comics'] = something;
+      console.log(data);
+      res.render('stash', data);
+    })
+  } else {
+    res.redirect('/');
+  }
+})
+
+// add selected comic book to comics db, triggered by ???
+// app.post('/', function(req, res){
+//   ????
+//    db.none.....
+// })
+
+
+// Delete comic from stash
+app.delete('/stash', function(req,res){
+  var user = req.session.user;
+  db.one('DELETE FROM comics WHERE users_id = $1', [user.id]);
+    // no promise needed, so we skip straight to the render
+    res.render('index'); // how can I redirect to the index page? res.redirect?
+});
 
 
 // USER ROUTES
@@ -148,3 +178,9 @@ app.post('/login', function(req, res){
   });
 })
 
+// logging out user
+app.get('/logout', function(req,res){
+  req.session.destroy(function(){
+    res.redirect('/login'); // redirect to login page
+  })
+})
