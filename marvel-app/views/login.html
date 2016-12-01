@@ -41,8 +41,18 @@
         {{#logged_in}}
         <div class="col-lg-6 center-block">
           <div class="alert alert-dismissible alert-warning">
-            <h4>Welcome {{email}}!</h4>
+            <h2>Welcome {{username}}!</h2>
+            <!-- This used to be {{email}} -->
+            </br>
+            <h1>Rename yourself</h1>
+            <form method="POST" action="/updateuser/{{id}}?_method=PUT">
+              <input name="username" value="{{username}}"><br>
+              <button type="submit">Save</button>
+            </form>
+            </br>
             <p>What are you reading, you marvelous creature?</p>
+            </br>
+            <h4>View my sweet stash</h4>
             <form method="GET" action="/stash">
               <button>My Stash</button>
             </form>

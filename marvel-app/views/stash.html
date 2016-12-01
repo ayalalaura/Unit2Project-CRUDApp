@@ -33,19 +33,6 @@
       </div>
     </nav>
 
-    <!-- Begin page content -->
-    <!-- <div class="container">
-      <div class="page-header">
-        <h1>Welcome to Marvel Revisited</h1>
-      </div>
-      <div class="search-bar">
-        <input name="value" type="text" placeholder="Enter Character" id="search-input">
-        <button id="search-button">Search</button>
-      </div> -->
-      <!-- <div class="search-results">
-          Insert results here
-      </div>  -->
-    <!-- </div> -->
 
     <div class="container">
         <div class="page-header">
@@ -55,7 +42,7 @@
         <div class="stash-items">
             <p class="comic-title">{{title}}</p>
             <img src="{{thumbnail}}/standard_medium.jpg">
-            <form method="POST" action="/stash?_method=DELETE">
+            <form method="POST" action="/delete/{{id}}?_method=DELETE">
               <button>Remove</button>
             </form>
         </div>

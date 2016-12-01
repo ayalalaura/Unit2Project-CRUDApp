@@ -91,26 +91,37 @@ app.get('/api', function(req, res){
 
 // Index route
 app.get('/', function(req,res){
-  console.log('Index loaded');
+  // console.log('Index loaded');
   res.render('index');
 })
 
-// ********
+
 // comics stash (only accessible if you're logged in (button on the login page))
 app.get('/stash', function(req, res){
   var user = req.session.user;
-  var data = {data:user};
+  // var data = {data:user};
+
   if (user) {
-    db.many('SELECT title, thumbnail FROM comics WHERE users_id = $1', [user.id]).then(function(){
+    db.many('SELECT * FROM comics WHERE users_id = $1', [user.id]).then(function(data){
       // data['comics'] = something;
-      console.log(data);
+      // console.log(data);
       // res.render('stash', data);
-      res.render('stash');
-    })
+      console.log('in db response at get /stash. data:');
+      console.log(data);
+      data.forEach(function(element){
+          element.thumbnail = element.thumbnail.trim(); // removes whitespace on both sides of img url
+          // thanks Tims! Didn't realize it was saving to db with whitespace - https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/Trim
+          // html code for whitespace = '%20'
+      });
+      res.render('stash', {
+        comics: data
+      });
+    });
   } else {
     res.redirect('/');
   }
 })
+
 
 
 // save comic book to db, triggered by save button
@@ -127,15 +138,14 @@ app.post('/save', function(req, res){
     })
 })
 
-// ******
-// Delete comic from stash (HOW DO I NOT DELETE EVERY COMIC FROM THAT USER)
-app.delete('/stash', function(req,res){
+// Delete comic from stash
+app.delete('/delete/:id', function(req,res){ // this url is only for deleting
   var user = req.session.user;
   var comic = req.body;
-  db.one('DELETE FROM comics WHERE comicID = $1 AND users_id = $2', [comic.comicID, user.id]);
-    // no promise needed, so we skip straight to the render
-    res.render('index'); // how can I redirect to the index page? res.redirect?
-});
+  db.one('DELETE FROM comics WHERE id=$1', [req.params.id]);
+    // no promise needed
+    res.redirect('/stash');
+  });
 
 
 // USER ROUTES
@@ -143,13 +153,20 @@ app.delete('/stash', function(req,res){
 app.get('/login', function(req, res){
   var logged_in;
   var email;
+  var username;
+  var id;
   if(req.session.user){ // the session is remembered
     logged_in = true;
-    email = req.session.user.email
+    email = req.session.user.email;
+    username = req.session.user.username
+    id = req.session.user.id
+    // username = req.session.user.username
   }
   var data = {
     'logged_in': logged_in,
-    'email': email
+    'email': email,
+    'username': username,
+    'id': id
   }
   res.render('login', data); // the response we want
 })
@@ -167,7 +184,7 @@ app.post('/signup', function(req, res){
      db.none('INSERT INTO users (username, email, password_digest) VALUES ($1, $2, $3)', [data.username, data.email, hash] // we wrap it in bcrypt; data.password becomes hash
     ).then(function(){
       // res.send('User created!');
-      res.redirect('/');
+      res.redirect('/login');
     });
   })
 })
@@ -190,9 +207,33 @@ app.post('/login', function(req, res){
   });
 })
 
+
 // logging out user
-app.get('/logout', function(req,res){
+app.get('/logout', function(req, res){
   req.session.destroy(function(){
     res.redirect('/login'); // redirect to login page
   })
 })
+
+// update username
+app.put('/updateuser/:id', function(req, res){
+  var userInfo = req.body // need to add a form to edit user info
+  db.none('UPDATE users SET username=$1 WHERE id=$2', [userInfo.username, req.params.id]).then(function(){
+    db.one('SELECT * FROM users WHERE id=$1', [req.params.id]).then(function(user){
+      req.session.user = user;
+      res.redirect('/login');
+    })
+  })
+})
+
+//  // 4. Create the appropriate route to update information on a species.
+// app.put('/creatures/:id',function(req, res){
+//   var creatures = req.body
+//   var id = req.params.id
+//   db.none('UPDATE creatures SET species=$1, family=$2, habitat=$3, diet=$4, planet=$5 WHERE id=$6',
+//     [creatures.species, creatures.family, creatures.habitat, creatures.diet, creatures.planet, id])
+
+//   // res.redirect('/creatures/'+id); // this is TRYING to hit a POST route
+//   res.redirect('/creatures');
+// });
+
