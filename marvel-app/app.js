@@ -62,29 +62,29 @@ var HASH = process.env.HASH;
 
 // route to get character data from api
 app.get('/api', function(req, res){
-  var character = req.query.value;
+  var character = req.query.value; // value is characterSearch, from script.js
   var firstApi = 'https://gateway.marvel.com:443/v1/public/characters?name=' + character + '&ts=1&apikey=' + PUBLIC_KEY + '&hash=' + HASH;
   request.get({
     url: firstApi,
     json: true,
   }, function(err, resp, data){ // similar to .done or success function
-    var characterData = data.data.results[0]; // getting back one character
-    var characterId = data.data.results[0].id; // need this for second API call (IT WORKS)
-    var secondApi = 'https://gateway.marvel.com:443/v1/public/characters/' + characterId + '/comics?limit=12&ts=1&apikey=' + PUBLIC_KEY + '&hash=' + HASH;
+      var characterData = data.data.results[0]; // getting back one character
+      var characterId = data.data.results[0].id; // need this for second API call
+      var secondApi = 'https://gateway.marvel.com:443/v1/public/characters/' + characterId + '/comics?limit=12&ts=1&apikey=' + PUBLIC_KEY + '&hash=' + HASH;
     // nested request for comics by character ID
-    request.get({
-      url: secondApi,
-      json: true,
-    }, function(err, resp, data){
-      var comicData = data.data.results; // array of 12 comic objects
-      res.json({
-        characterData,
-        comicData
-      }); // ends inner success function, returning both sets of data
-      console.log('server-side request worked!'); // this works!
-    } // inner request.get
-    ) // ends inner request.get
-    } // main request.get
+      request.get({
+        url: secondApi,
+        json: true,
+      }, function(err, resp, data){
+          var comicData = data.data.results; // array of 12 comic objects
+            res.json({
+             characterData,
+              comicData
+            }); //returning both sets of data
+          console.log('server-side request worked!'); // this works!
+        } // inner function
+     ) // ends inner request.get
+    } // main function
   ) // ends main request.get
 }) // ends app.get
 
@@ -95,32 +95,44 @@ app.get('/', function(req,res){
   res.render('index');
 })
 
+// ********
 // comics stash (only accessible if you're logged in (button on the login page))
 app.get('/stash', function(req, res){
   var user = req.session.user;
   var data = {data:user};
   if (user) {
-    db.many('SELECT * FROM comics WHERE users_id = $1', [user.id]).then(function(something){
-      data['comics'] = something;
+    db.many('SELECT title, thumbnail FROM comics WHERE users_id = $1', [user.id]).then(function(){
+      // data['comics'] = something;
       console.log(data);
-      res.render('stash', data);
+      // res.render('stash', data);
+      res.render('stash');
     })
   } else {
     res.redirect('/');
   }
 })
 
-// add selected comic book to comics db, triggered by ???
-// app.post('/', function(req, res){
-//   ????
-//    db.none.....
-// })
 
+// save comic book to db, triggered by save button
+app.post('/save', function(req, res){
+  var user = req.session.user;
+  var comic = req.body; // grabbed from hidden inputs in body parser
+  // console.log(user);
+  // console.log(comic);
+  // console.log(comic.comicID);
+    db.none('INSERT INTO comics (comicID, title, thumbnail, users_id) VALUES ($1, $2, $3, $4)', [comic.comicID, comic.title, comic.thumbnail, user.id]).then(function(){
+      // console.log(user.id);
+      res.redirect('/stash');
+      // res.redirect('/stash' + user);
+    })
+})
 
-// Delete comic from stash
+// ******
+// Delete comic from stash (HOW DO I NOT DELETE EVERY COMIC FROM THAT USER)
 app.delete('/stash', function(req,res){
   var user = req.session.user;
-  db.one('DELETE FROM comics WHERE users_id = $1', [user.id]);
+  var comic = req.body;
+  db.one('DELETE FROM comics WHERE comicID = $1 AND users_id = $2', [comic.comicID, user.id]);
     // no promise needed, so we skip straight to the render
     res.render('index'); // how can I redirect to the index page? res.redirect?
 });
@@ -152,10 +164,10 @@ app.post('/signup', function(req, res){
   // Save user to the database (need to create one: psql -d marvel_crud -f db/marvel_schema.sql). This creates an empty database which will store the users's email and hash password. We want to take the user's password, run it through an encryptor and save it in the database (getting nothing back)
   var data = req. body // use body parser to grab the input
   bcrypt.hash(data.password, 10, function(err, hash){  // (what's getting hashed, the number of times it's salted(we use 10 because that's what's in the bcrypt documentation), callback function with error and hash value)
-     db.none('INSERT INTO users (email, password_digest) VALUES ($1, $2)', [data.email, hash] // we wrap it in bcrypt; data.password becomes hash
+     db.none('INSERT INTO users (username, email, password_digest) VALUES ($1, $2, $3)', [data.username, data.email, hash] // we wrap it in bcrypt; data.password becomes hash
     ).then(function(){
-      res.send('User created!');
-      // res. redirect to index?
+      // res.send('User created!');
+      res.redirect('/');
     });
   })
 })

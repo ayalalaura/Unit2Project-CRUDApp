@@ -2,16 +2,15 @@ $(document).ready(function() {
   console.log("script loaded");
 
 
-
 // click function - triggers ajax function
-   var searchMarvel = function() {
-       $("#search-button").click(function() { // event listener on search button
-           var searchTerm = $("#search-input").val(); // declaring var with value entered into input
-           getCharacter(searchTerm); // call the internal api (with data) using term entered into input
-       });
-   };
-   searchMarvel(); // calling event listener (button click), which triggers subsequent functions
+var searchMarvel = function() {
+   $("#search-button").click(function() { // event listener on search button
+        var searchTerm = $("#search-input").val(); // declaring var with value entered into input
+        getCharacter(searchTerm); // call the internal api (with data) using term entered into input
+    });
+};
 
+searchMarvel(); // calling event listener (button click), which triggers subsequent functions
 
 
 // ajax function - call the append functions
@@ -25,88 +24,69 @@ var getCharacter = function(characterSearch){
   }).done(function(data){
     console.log(data); // entire data object (characterData AND comicData)
     searchResults(data);
-    // marvelCharacter();
-    // marvelComics();
   }) // end .done
 } // end ajax call
 
 
-
-// // append character data
-// var marvelCharacter = function(data){
-//   var $body = $('body');
-//   // var characterName = data.characterData.name;
-//   // var characterDescription = data.characterData.description;
-//   // var characterImage = data.characterData.thumbnail.path;
-//   var characterName = characterData.name;
-//   var characterDescription = characterData.description;
-//   var characterImage = characterData.thumbnail.path;
-
-//   $body.append('<p>' + characterName + '</p>');
-//   $body.append('<p>' + characterDescription + '</p>');
-//   $body.append("<img src=" + characterImage + '/standard_medium.jpg' + ">");
-// }
-
-
-
-// // append comic data
-// var marvelComics = function(data){
-//   var $body = $('body');
-//   var comicTitle = data.comicData[i].title;
-//   var comicImage = data.comicData[i].thumbnail.path;
-
-//   for (var i = 0; i < comicData.length; i++){
-//     $body.append('<p>' + comicTitle + '</p>');
-//     $body.append("<img src=" + comicImage + '/standard_medium.jpg' + ">");
-//   }
-// }
-
-
-
-// combine these two functions into one
    var searchResults = function(data) {
-       var $body = $('body');
+
        var characterName = data.characterData.name;
        var characterDescription = data.characterData.description;
        var characterImage = data.characterData.thumbnail.path;
-       // add comicData here and below
-       // should comic data be in a for loop? I need to access items from the comicData array and then parse through it
-       // var comicTitle = data.comicData[i].title;
-       // var comicImage = data.comicData[i].thumbnail.path;
+
+       // console.log('Entering search results function');
 
        addCharacter(characterName, characterDescription, characterImage); // calling addCharacter
-       addComics(data);
-
+       addComics(data); // calling addComics
    }
 
+
+
+  // append character info; this does not need to be saved to db
    var addCharacter = function(characterName, characterDescription, characterImage) {
+
        var $body = $('body');
-       $body.append('<p>' + characterName + '</p>');
-       $body.append('<p>' + characterDescription + '</p>');
-       $body.append("<img src=" + characterImage + '/standard_medium.jpg' + ">");
+       var $characterResult = $('<div class="character-result"></div>');
 
-       // $body.append('<p>' + comicTitle + '</p>');
-       // $body.append("<img src=" + comicImage + '/standard_medium.jpg' + ">");
+       $body.append($characterResult);
 
-       // for loop to append each item from comicData array
-        // for (var i = 0; i < comicData.length; i++){
-        //   $body.append('<p>' + comicTitle + '</p>');
-        //   $body.append("<img src=" + comicImage + '/standard_medium.jpg' + ">");
-        // }
+       $characterResult.append('<img class="character-image" src=' + characterImage + "/standard_medium.jpg" + '>');
+       $characterResult.append('<p class="character-name">' + characterName + '</p>');
+       $characterResult.append('<p class="character-description">' + characterDescription + '</p>');
    }
 
 
+   // append comics to body and add a hidden save form to grab data for db (thanks Marcos & Hillary!)
    var addComics = function(data){
-    var $body = $('body');
 
      // for loop to append each item from comicData array
         for (var i = 0; i < data.comicData.length; i++){
+          // var container = $('<div class="grid"></div>'); // save to a container and append that way?
+
+          var $body = $('body');
+          var $comicResult = $('<div class="comic-result"></div>');
+          var $form = $('<form class="hidden-form" action="/save" method="POST"></form>');
+          var $button = $("<button class='save-button' type='submit'>Save</button>");
+
           var comicTitle = data.comicData[i].title;
           var comicImage = data.comicData[i].thumbnail.path;
-          $body.append('<p>' + comicTitle + '</p>');
-          $body.append("<img src=" + comicImage + '/standard_medium.jpg' + ">");
-          $body.append('<button id="save-button"> Save </button>');
-        }
+          var comicId = data.comicData[i].id;
+
+          $body.append($comicResult);
+
+          $comicResult.append($form); // appending hidden form to the div
+
+          $comicResult.append("<img src=" + comicImage + '/standard_medium.jpg' + ">"); // comic image
+          $form.append('<input name="thumbnail" type="hidden" value=" ' + comicImage + ' ">') // comic image info
+
+          $comicResult.append('<p class="comic-title">' + comicTitle + '</p>');
+          $form.append('<input name="title" type="hidden" value =" '  + comicTitle + ' ">');
+
+          $form.append('<input name="comicID" type="hidden" value =" ' + comicId + ' ">')
+
+          $form.append($button);
+
+        } // end of for loop
    }
 
 

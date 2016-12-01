@@ -1,17 +1,18 @@
-DROP TABLE IF EXISTS users;
+DROP TABLE IF EXISTS users CASCADE;
+DROP TABLE IF EXISTS comics CASCADE;
 
 CREATE TABLE users (
   id SERIAL PRIMARY KEY,
+  username VARCHAR(255),
   email VARCHAR(255) UNIQUE,
-  password_digest VARCHAR(255)
+  password_digest VARCHAR(255) NOT NULL
 );
 
 
 CREATE TABLE comics (
   id SERIAL PRIMARY KEY,
-
-
-
+  comicID INTEGER,
+  title VARCHAR(255) NOT NULL,
+  thumbnail VARCHAR(255) NOT NULL,
+  users_id INTEGER REFERENCES users(id)
 );
-
--- RESEED
