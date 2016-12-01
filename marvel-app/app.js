@@ -226,14 +226,3 @@ app.put('/updateuser/:id', function(req, res){
   })
 })
 
-//  // 4. Create the appropriate route to update information on a species.
-// app.put('/creatures/:id',function(req, res){
-//   var creatures = req.body
-//   var id = req.params.id
-//   db.none('UPDATE creatures SET species=$1, family=$2, habitat=$3, diet=$4, planet=$5 WHERE id=$6',
-//     [creatures.species, creatures.family, creatures.habitat, creatures.diet, creatures.planet, id])
-
-//   // res.redirect('/creatures/'+id); // this is TRYING to hit a POST route
-//   res.redirect('/creatures');
-// });
-
