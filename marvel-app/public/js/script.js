@@ -57,9 +57,9 @@ var getCharacter = function(characterSearch){
 
        $body.append($characterResult);
 
-       $characterResult.append('<img class="character-image" src=' + characterImage + "/standard_medium.jpg" + '>');
-       $characterResult.append('<p class="character-name">' + characterName + '</p>');
-       $characterResult.append('<p class="character-description">' + characterDescription + '</p>');
+       $characterResult.append('<img class="character-image" src=' + characterImage + "/standard_xlarge.jpg" + '>');
+       $characterResult.append('<h3 class="character-name">' + characterName + '</h3>');
+       $characterResult.append('<h4 class="character-description">' + characterDescription + '</h4>');
        $characterResult.append($break);
    }
 
@@ -85,7 +85,7 @@ var getCharacter = function(characterSearch){
 
           $comicResult.append($form); // appending hidden form to the div
 
-          $comicResult.append("<img src=" + comicImage + '/standard_medium.jpg' + ">"); // comic image
+          $comicResult.append("<img src=" + comicImage + '/portrait_incredible.jpg' + ">"); // comic image
           $form.append('<input name="thumbnail" type="hidden" value=" ' + comicImage + ' ">') // comic image info
 
           $comicResult.append('<p class="comic-title">' + comicTitle + '</p>');

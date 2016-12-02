@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Marvel Revisited</title>
+  <title>Log In</title>
   <link href="https://fonts.googleapis.com/css?family=PT+Sans|Russo+One" rel="stylesheet">
   <link rel="stylesheet" href="/css/bootstrap.css">
   <link rel="stylesheet" href="/css/style.css">
@@ -36,7 +36,6 @@
     <!-- Begin page content -->
    <div class="main-container">
       <div class="border-container">
-        <h1>Marvel Revisited</h1>
         <br>
         {{#logged_in}}
         <div class="col-lg-6 center-block">
@@ -70,6 +69,7 @@
         </div>
         {{/logged_in}}
         {{^logged_in}}
+        <h1 class="login">Welcome back!</h1>
         <div class="col-lg-6 center-block">
           <div class="well bs-component">
             <form class="form-horizontal" action="/login" method="post">

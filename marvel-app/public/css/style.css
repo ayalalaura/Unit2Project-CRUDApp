@@ -39,18 +39,59 @@ h1 {
   color:  red;
 }
 
-/* body > .container {
-  padding: 60px 15px 0;
-}
-.container .text-muted {
-  margin: 20px 0;
+.signup {
+  margin-top: 100px;
 }
 
-.footer > .container {
-  padding-right: 15px;
-  padding-left: 15px;
+.login {
+  margin-top: 80px;
 }
 
-code {
-  font-size: 80%;
-} */
+.banner-image {
+  /* background-image: url('http://www.leviathyn.com/wp-content/uploads/2014/02/ms-marvel-featured2.jpg'); */
+  width: 900px;
+  height: 300px;
+  position: relative;
+  top: 40%;
+  left: 50%;
+  margin-top: 20px;
+  margin-left: -400px; /* Half the width */
+  margin-bottom: 0px;
+}
+
+.search-bar{
+  margin-left: 35%;
+}
+
+.search-message {
+  text-align: center;
+  line-height: 30px;
+}
+
+.character-result{
+  padding: 30px;
+  width:  800px;
+  height: 300px;
+  margin:  0 auto;
+}
+
+.character-image{
+  float: left;
+  padding: 10px;
+}
+
+.character-description{
+  font-family: 'PT Sans', sans-serif;
+  text-align:  justify;
+}
+
+/* https://css-tricks.com/snippets/css/absolute-center-vertical-horizontal-an-image/ */
+/* img .ms-marvel{
+  width: 400px;
+  height: 145px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  margin-top: -145px;
+  margin-left: -200px; /* Half the width */
+/* } */
