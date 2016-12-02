@@ -10,7 +10,7 @@ The Marvel Revisited App invites Marvel Comics fans both old and new to search f
 - node.js
 - npm packages including: express, mustache-express, pg-promise, body-parser, and request
 - PostgreSQL
-- JavaScript for client-side actions like triggering appends
+- jQuery for client-side functionality like triggering appends
 - Bootstrap for the basic HTML & CSS (forms, nav bar, and footer for all my views)
 - Postman for troubleshooting how to make the right API call and parse through JSON data
 - Marvel Comics API (https://developer.marvel.com/)
@@ -29,6 +29,8 @@ The Marvel Revisited App invites Marvel Comics fans both old and new to search f
 ### Challenges
 - Staying on task, at times. This was especially true when it came to styling. Though this is something I could easily fix later on, the lack of styling (such as adding padding, grids, etc.) still irks me.
 - Asking for help! I lost a lot of time the first couple days just staring at my screen waiting for inspiration to strike. Sometimes it did, but when I asked for help not only did I clarify errors in my code, I also saved precious time and was able to help other classmates with similar issues.
+- Figuring out all the places where I need to/should add error messages. For next time, I would spent an extra hour or so on user flow.
+-Heroku gives me some issues when a user attempts to search for a character that does not exist in the Marvel API. I plan to create a pop up error message to prevent the app from crashing.
 
 ### Installation Instructions
 - With my server, database, and required keys connected to Heroku, the app is ready to use from the link above.
@@ -38,3 +40,6 @@ The Marvel Revisited App invites Marvel Comics fans both old and new to search f
 - CSS! I regret not being able to do more CSS or dig deeper into Bootstrap, especially considering this is an app meant to highlight visual media (comics and their awesome illustrated covers).
 - Refining search with filters, allow partial searches, etc. 
 - An app that followed a seamless user flow.
+
+### THANKS!
+Much thanks to all our fabulous WDI instructors (John, Heidi, Jared, Tims), Nick, and my fellow classmates for helping me make this work! 
