@@ -15,6 +15,12 @@ searchMarvel(); // calling event listener (button click), which triggers subsequ
 
 // ajax function - call the append functions
 var getCharacter = function(characterSearch){
+  // clearing DOM of previous results
+    var $hero = $('.character-result');
+    $hero.remove();
+    var $issues = $('.comic-result');
+    $issues.remove();
+
   // console.log('characterSearch');
   $.ajax({
     url: '/api', // created this route/url in app.js with specific ajax call using request module (thnx Heidi & Kristi!)
@@ -47,12 +53,14 @@ var getCharacter = function(characterSearch){
 
        var $body = $('body');
        var $characterResult = $('<div class="character-result"></div>');
+       var $break = $('</br>'); // adding breaks in lieu of styling :[
 
        $body.append($characterResult);
 
        $characterResult.append('<img class="character-image" src=' + characterImage + "/standard_medium.jpg" + '>');
        $characterResult.append('<p class="character-name">' + characterName + '</p>');
        $characterResult.append('<p class="character-description">' + characterDescription + '</p>');
+       $characterResult.append($break);
    }
 
 
@@ -67,6 +75,7 @@ var getCharacter = function(characterSearch){
           var $comicResult = $('<div class="comic-result"></div>');
           var $form = $('<form class="hidden-form" action="/save" method="POST"></form>');
           var $button = $("<button class='save-button' type='submit'>Save</button>");
+          var $break = $('</br>');
 
           var comicTitle = data.comicData[i].title;
           var comicImage = data.comicData[i].thumbnail.path;
@@ -81,6 +90,8 @@ var getCharacter = function(characterSearch){
 
           $comicResult.append('<p class="comic-title">' + comicTitle + '</p>');
           $form.append('<input name="title" type="hidden" value =" '  + comicTitle + ' ">');
+
+          $comicResult.append($break);
 
           $form.append('<input name="comicID" type="hidden" value =" ' + comicId + ' ">')
 

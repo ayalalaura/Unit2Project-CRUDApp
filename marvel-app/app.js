@@ -100,14 +100,13 @@ app.get('/', function(req,res){
 app.get('/stash', function(req, res){
   var user = req.session.user;
   // var data = {data:user};
-
   if (user) {
-    db.many('SELECT * FROM comics WHERE users_id = $1', [user.id]).then(function(data){
-      // data['comics'] = something;
+    db.many('SELECT * FROM comics WHERE users_id = $1', [user.id])
+    .catch(function(){ // adding catch in case user is requesting empty stash (redirect to search page)
+      res.redirect('/')
+    }).then(function(data){
+      // console.log('in db response at get /stash. data:');
       // console.log(data);
-      // res.render('stash', data);
-      console.log('in db response at get /stash. data:');
-      console.log(data);
       data.forEach(function(element){
           element.thumbnail = element.thumbnail.trim(); // removes whitespace on both sides of img url
           // thanks Tims! Didn't realize it was saving to db with whitespace - https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/Trim
@@ -121,7 +120,6 @@ app.get('/stash', function(req, res){
     res.redirect('/');
   }
 })
-
 
 
 // save comic book to db, triggered by save button
@@ -199,7 +197,7 @@ app.post('/login', function(req, res){
     bcrypt.compare(data.password, user.password_digest, function(err, cmp){ // then check password
       if(cmp){
         req.session.user = user;
-        res.redirect('/'); // redirect to the index page when user logged in
+        res.redirect('/login'); // redirect to the index page when user logged in
       } else {
         res.send('Email/Password not found')
       }

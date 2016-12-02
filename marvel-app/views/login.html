@@ -43,14 +43,20 @@
           <div class="alert alert-dismissible alert-warning">
             <h2>Welcome {{username}}!</h2>
             <!-- This used to be {{email}} -->
-            </br>
-            <h1>Rename yourself</h1>
+            <!-- </br> -->
+            <h4>Rename yourself</h4>
             <form method="POST" action="/updateuser/{{id}}?_method=PUT">
               <input name="username" value="{{username}}"><br>
               <button type="submit">Save</button>
             </form>
             </br>
-            <p>What are you reading, you marvelous creature?</p>
+            </br>
+            <h3>What are you reading, you marvelous creature?</h3>
+            </br>
+            <h4>Discover new comics</h4>
+            <form method="GET" action="/">
+              <button>Search</button>
+            </form>
             </br>
             <h4>View my sweet stash</h4>
             <form method="GET" action="/stash">
@@ -97,7 +103,11 @@
 
     <footer class="footer">
       <div class="container">
-        <p class="text-muted">Place sticky footer content here.</p>
+        <p class="text-muted">
+          <span>© 2016 Laura Ayala</span>
+          </br>
+          <a href=\"http://marvel.com\">Data provided by Marvel. © 2016 MARVEL</a>
+        </p>
       </div>
     </footer>
 

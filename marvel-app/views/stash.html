@@ -39,19 +39,25 @@
             <h1 class="stash">My Stash</h1>
         </div>
         {{#comics}}
-        <div class="stash-items">
+        <div class=".col-md-4" class="stash-items">
             <p class="comic-title">{{title}}</p>
             <img src="{{thumbnail}}/standard_medium.jpg">
             <form method="POST" action="/delete/{{id}}?_method=DELETE">
               <button>Remove</button>
             </form>
+            </br>
+            <!-- adding break in lieu of styling -->
         </div>
         {{/comics}}
     </div>
 
     <footer class="footer">
       <div class="container">
-        <p class="text-muted">Place sticky footer content here.</p>
+        <p class="text-muted">
+          <span>© 2016 Laura Ayala</span>
+          </br>
+          <a href=\"http://marvel.com\">Data provided by Marvel. © 2016 MARVEL</a>
+        </p>
       </div>
     </footer>
 
