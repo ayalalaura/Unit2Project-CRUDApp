@@ -22,7 +22,7 @@ The Marvel Revisited App invites Marvel Comics fans both old and new to search f
 
 ![Imgur](http://i.imgur.com/fhmql4s.jpg?1)
 
-![Imgur](http://i.imgur.com/Egy3xRFm.jpg?1)
+![Imgur](http://i.imgur.com/Egy3xRFm.jpg?2)
 
 ![Imgur](http://i.imgur.com/ArJ2ola.jpg?1)
 
