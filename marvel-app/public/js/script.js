@@ -88,7 +88,7 @@ var getCharacter = function(characterSearch){
           $comicResult.append("<img src=" + comicImage + '/portrait_incredible.jpg' + ">"); // comic image
           $form.append('<input name="thumbnail" type="hidden" value=" ' + comicImage + ' ">') // comic image info
 
-          $comicResult.append('<p class="comic-title">' + comicTitle + '</p>');
+          $comicResult.append('<h3 class="comic-title">' + comicTitle + '</h3>');
           $form.append('<input name="title" type="hidden" value =" '  + comicTitle + ' ">');
 
           $comicResult.append($break);

@@ -39,8 +39,8 @@
             <h1 class="stash">My Stash</h1>
         </div>
         {{#comics}}
-        <div class=".col-md-4" class="stash-items">
-            <p class="comic-title">{{title}}</p>
+        <div class="stash-items">
+            <h3 class="comic-title">{{title}}</h3>
             <img src="{{thumbnail}}/portrait_incredible.jpg">
             <form method="POST" action="/delete/{{id}}?_method=DELETE">
               <button>Remove</button>

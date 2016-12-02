@@ -85,6 +85,26 @@ h1 {
   text-align:  justify;
 }
 
+.comic-result{
+  padding: 30px;
+  width: 400px;
+  height: 450px;
+  text-align: center;
+  display: inline-block;
+}
+
+.stash-items{
+  padding: 30px;
+  width: 400px;
+  height: 450px;
+  text-align: center;
+  display: inline-block;
+}
+
+#user-welcome{
+  margin-top: 80px;
+}
+
 /* https://css-tricks.com/snippets/css/absolute-center-vertical-horizontal-an-image/ */
 /* img .ms-marvel{
   width: 400px;
