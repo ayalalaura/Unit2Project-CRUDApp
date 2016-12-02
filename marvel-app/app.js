@@ -129,11 +129,15 @@ app.post('/save', function(req, res){
   // console.log(user);
   // console.log(comic);
   // console.log(comic.comicID);
+  if (user) {
     db.none('INSERT INTO comics (comicID, title, thumbnail, users_id) VALUES ($1, $2, $3, $4)', [comic.comicID, comic.title, comic.thumbnail, user.id]).then(function(){
       // console.log(user.id);
       res.redirect('/stash');
       // res.redirect('/stash' + user);
     })
+} else {
+  res.redirect('/signup');
+}
 })
 
 // Delete comic from stash
