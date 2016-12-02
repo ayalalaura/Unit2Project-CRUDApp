@@ -4,12 +4,15 @@ https://marvelcrudapp.herokuapp.com/
 
 The Marvel Revisited App invites Marvel Comics fans both old and new to search for their favorite characters, learn a bit about their backstories, and save recent issues featuring that character to their Stash. The app is easy to navigate, though users who sign up will not only be able to conduct searches, they will also be able to save and delete items to their customized Reading Stash.
 
+![alt tag](https://media.tenor.co/images/166879c7b7a55ecb2e5c1ad5f3b9f182/raw)
+
 ### Technologies Used
 - node.js
 - npm packages including: express, mustache-express, pg-promise, body-parser, and request
 - PostgreSQL
 - JavaScript for client-side actions like triggering appends
 - Bootstrap for the basic HTML & CSS (forms, nav bar, and footer for all my views)
+- Postman for troubleshooting how to make the right API call and parse through JSON data
 - Marvel Comics API (https://developer.marvel.com/)
 
 ### Approach
