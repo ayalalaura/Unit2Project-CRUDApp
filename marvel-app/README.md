@@ -28,7 +28,7 @@ The Marvel Revisited App invites Marvel Comics fans both old and new to search f
 
 ### Challenges
 - Staying on task, at times. This was especially true when it came to styling. Though this is something I could easily fix later on, the lack of styling (such as adding padding, grids, etc.) still irks me.
--Asking for help! I lost a lot of time the first couple days just staring at my screen waiting for inspiration to strike. Sometimes it did, but when I asked for help not only did I clarify errors in my code, I also saved precious time and was able to help other classmates with similar issues.
+- Asking for help! I lost a lot of time the first couple days just staring at my screen waiting for inspiration to strike. Sometimes it did, but when I asked for help not only did I clarify errors in my code, I also saved precious time and was able to help other classmates with similar issues.
 
 ### Installation Instructions
 - With my server, database, and required keys connected to Heroku, the app is ready to use from the link above.
